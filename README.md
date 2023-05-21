@@ -1,43 +1,45 @@
-# {Name of App}
+# 3D Binned Kernel Density Estimation
+GitHub repository: https://github.com/kulits2/3D-BKDE
 
-*Give your app a short and informative title. Please adhere to our convention of Title Case without hyphens (e.g. `My New App`)*
-
-MoveApps
-
-Github repository: *github.com/yourAccount/Name-of-App* *(the link to the repository where the code of the app can be found must be provided)*
-
-## SDK
-
-As an **App developer** you should have a look into the [developer README document](developer_README.md). 
-*Please delete this section for your final app documentation*
+<img width="30%" alt="An example output animation." src="out.gif">
 
 ## Description
-*Enter here the short description of the App that might also be used when filling out the description at submission of the App to Moveapps. This text is directly presented to Users that look through the list of Apps when compiling Workflows.*
+This app provides a quick way to estimate and visualize 3D space use.
 
 ## Documentation
-*Enter here a detailed description of your App. What is it intended to be used for. Which steps of analyses are performed and how. Please be explicit about any detail that is important for use and understanding of the App and its outcomes.*
+This app takes a `Trajectory`, interpolates it to a fixed time frequency, bins it into a 3D histogram, and convolves a gaussian kernel over the histogram to produce an estimate for 3D space use. It filters the convolved data to remove voxels that contribute least to the total space use. It optionally downloads `SRTM1` data with the [elevation](https://github.com/bopen/elevation) package and displays it underneath the voxels.
 
 ### Input data
-*Indicate which type of input data the App requires. Currently only R objects of class `MoveStack` can be used. This will be extend in the future.*
-
-*Example*: MovingPandas TrajectoryCollection in Movebank format
+A pre-filtered MovingPandas `TrajectoryCollection` in Movebank format. Only the first `Trajectory` object will be used.
 
 ### Output data
-*Indicate which type of output data the App produces to be passed on to subsequent apps. Currently only R objects of class `MoveStack` can be used. This will be extend in the future. In case the App does not pass on any data (e.g. a shiny visualization app), it can be also indicated here that no output is produced to be used in subsequent apps.*
-
-*Example:* MovingPandas TrajectoryCollection in Movebank format
+No output data is produced.
 
 ### Artefacts
-*If the App creates artefacts (e.g. csv, pdf, jpeg, shapefiles, etc), please list them here and describe each.*
+`out.png`: An image visualization of the space use.
 
-*Example:* `rest_overview.csv`: csv-file with Table of all rest site properties
+`out.gif`: An animated visualization of the space use.
 
-### Settings 
-*Please list and define all settings/parameters that the App requires to be set, if necessary including their unit.*
+### Settings
+`Resampling Frequency` (`freq`): The time frequency of track resampling before binning. Accepts any `unit` value at least one second from https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html
 
-*Example:* `Radius of resting site` (radius): Defined radius the animal has to stay in for a given duration of time for it to be considered resting site. Unit: `metres`.
+`Maximum Segment Length` (`max_seg_len`): Remove trajectory segments with greater than this time between fixes. Accepts any `unit` value at least one second from https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html
+
+`Z Column Name` (`z_col`): The name of the column that stores the HAE.
+
+`Kernel Radius` (`kernel_radius`): THe radius of the kernel in grid units.
+
+`Kernel Sigma` (`kernel_sigma`): The gaussian kernel sigma.
+
+`Latitude Grid Dimension` (`lat_grid_dim`): The number of latitudinal grid cells.
+
+`Longitude Grid Dimension` (`lon_grid_dim`): The number of longitudinal grid cells.
+
+`Altitude Grid Dimension` (`alt_grid_dim`): The number of altitudinal grid cells.
+
+`KDE Percentile` (`percentile`): Display the most frequently occupied voxels that make up the given percent of the total time spent.
+
+`Show Topography` (`show_topo`): Display a topographic map from SRTM1_ELLIP underneath the voxels.
 
 ### Null or error handling
-*Please indicate for each setting/parameter as well as the input data which behaviour the App is supposed to show in case of errors or NULL values/input. Please also add notes of possible errors that can happen if settings are improperly set and any other important information that you find the user should be aware of.*
-
-*Example:* **Setting `radius`:** If no radius AND no duration are given, the input data set is returned with a warning. If no radius is given (NULL), but a duration is defined then a default radius of 1000m = 1km is set. 
+If the app runs out of memory, try again with smaller grid dimensions, higher `freq` (do not use `1s` if your fixes are sampled at `1h`), or filter out more fixes before running the app.

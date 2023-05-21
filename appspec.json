@@ -1,21 +1,94 @@
 {
-  "settings": [],
+  "settings": [
+    {
+      "id": "freq",
+      "name": "Resampling Frequency",
+      "description": "The time frequency of track resampling before binning. Accepts any `unit` value greater than a second from https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html",
+      "defaultValue": "1s",
+      "type": "STRING"
+    },
+    {
+      "id": "max_seg_len",
+      "name": "Maximum Segment Length",
+      "description": "Remove segments with greater than this time between fixes. Accepts any `unit` value greater than a second from https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html",
+      "defaultValue": "2h",
+      "type": "STRING"
+    },
+    {
+      "id": "z_col",
+      "name": "Z Column Name",
+      "description": "The name of the column that stores the HAE.",
+      "defaultValue": "height.above.ellipsoid",
+      "type": "STRING"
+    },
+    {
+      "id": "kernel_radius",
+      "name": "Kernel Radius",
+      "description": "The radius of the kernel in grid units.",
+      "defaultValue": 5,
+      "type": "INTEGER"
+    },
+    {
+      "id": "kernel_sigma",
+      "name": "Kernel Sigma",
+      "description": "The gaussian kernel sigma.",
+      "defaultValue": 1.0,
+      "type": "DOUBLE"
+    },
+    {
+      "id": "lat_grid_dim",
+      "name": "Latitude Grid Dimension",
+      "description": "The number of latitudinal grid cells.",
+      "defaultValue": 100,
+      "type": "INTEGER"
+    },
+    {
+      "id": "lon_grid_dim",
+      "name": "Longitude Grid Dimension",
+      "description": "The number of longitudinal grid cells.",
+      "defaultValue": 100,
+      "type": "INTEGER"
+    },
+    {
+      "id": "alt_grid_dim",
+      "name": "Altitude Grid Dimension",
+      "description": "The number of altitudinal grid cells.",
+      "defaultValue": 10,
+      "type": "INTEGER"
+    },
+    {
+      "id": "percentile",
+      "name": "KDE Percentile",
+      "description": "Display the most frequently occupied voxels that make up the given percent of the total time spent.",
+      "defaultValue": 99.5,
+      "type": "DOUBLE"
+    },
+    {
+      "id": "show_topo",
+      "name": "Show Topography",
+      "description": "Display a topographic map from SRTM1_ELLIP underneath the voxels.",
+      "defaultValue": true,
+      "type": "CHECKBOX"
+    }
+  ],
   "providedAppFiles": [],
-  "createsArtifacts": false,
+  "createsArtifacts": true,
   "license": {
     "key": "MIT"
   },
   "language": "eng",
   "keywords": [
-    "example",
-    "template"
+    "space-use modeling",
+    "KDE",
+    "3D",
+    "JAX"
   ],
   "people": [
     {
-      "firstName": "Charles",
+      "firstName": "Peter",
       "middleInitials": null,
-      "lastName": "Darwin",
-      "email": "creator@example.com",
+      "lastName": "Kulits",
+      "email": "peter.kulits@tuebingen.mpg.de",
       "roles": [
         "author",
         "creator"
@@ -27,19 +100,14 @@
   ],
   "funding": [
     {
-      "name": "funder name",
-      "comment": "grant for App"
+      "name": "N/A",
+      "comment": "N/A"
     }
   ],
   "references": [
-    {
-      "type": "IsDescribedBy",
-      "note": "Darwin, C. 1900. The creation. Journal XY. 1-2",
-      "url": "https://anylink.xyz"
-    }
   ],
   "documentation": {
-    "url": "https://github.com/yourAccount/my-app/README.md"
+    "url": "https://github.com/kulits/3D-BKDE/README.md"
   }
 }
 

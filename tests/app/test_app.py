@@ -13,13 +13,12 @@ class MyTestCase(unittest.TestCase):
         os.environ['APP_ARTIFACTS_DIR'] = os.path.join(ROOT_DIR, 'tests/resources/output')
         self.sut = App(moveapps_io=MoveAppsIo())
 
-    def test_app_returns_input(self):
+    def test_app_runs(self):
         # prepare
-        expected: mpd.TrajectoryCollection = pd.read_pickle(os.path.join(ROOT_DIR, 'tests/resources/app/input2.pickle'))
+        data: mpd.TrajectoryCollection = pd.read_pickle(os.path.join(ROOT_DIR, 'resources/samples/input1.pickle'))
         config: dict = {}
 
         # execute
-        actual = self.sut.execute(data=expected, config=config)
-
-        # verif
-        self.assertEqual(expected, actual)
+        self.sut.execute(data=data, config=config)
+        assert os.path.exists(self.sut.moveapps_io.create_artifacts_file("out.png"))
+        assert os.path.exists(self.sut.moveapps_io.create_artifacts_file("out.gif"))

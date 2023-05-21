@@ -2,9 +2,22 @@ name: moveapps-python-sdk
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.9
   - pandas
   - geopandas
   - movingpandas
   - pluggy
   - python-dotenv
+  - elevation
+  - imageio
+  - jax
+  - make
+  - numpy
+  - pandas
+  - pyproj
+  - pyvista
+  - rasterio
+  - scipy
+  - shapely
+  - pip:
+    - https://github.com/pyvista/pyvista-wheels/raw/main/vtk_osmesa-9.2.5-cp39-cp39-linux_x86_64.whl
