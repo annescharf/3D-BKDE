@@ -98,14 +98,6 @@
       "affiliationRor": null
     }
   ],
-  "funding": [
-    {
-      "name": "N/A",
-      "comment": "N/A"
-    }
-  ],
-  "references": [
-  ],
   "documentation": {
     "url": "https://github.com/kulits/3D-BKDE/README.md"
   }

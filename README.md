@@ -10,15 +10,17 @@ This app provides a quick way to estimate and visualize 3D space use.
 This app takes a `Trajectory`, interpolates it to a fixed time frequency, bins it into a 3D histogram, and convolves a gaussian kernel over the histogram to produce an estimate for 3D space use. It filters the convolved data to remove voxels that contribute least to the total space use. It optionally downloads `SRTM1` data with the [elevation](https://github.com/bopen/elevation) package and displays it underneath the voxels.
 
 ### Input data
-A pre-filtered MovingPandas `TrajectoryCollection` in Movebank format. Only the first `Trajectory` object will be used.
+A pre-filtered MovingPandas `TrajectoryCollection` in Movebank format. Each `Trajectory` must have a valid non-zero height above ellipsoid.
 
 ### Output data
-No output data is produced.
+The input MovingPandas `TrajectoryCollection` is returned.
 
 ### Artefacts
-`out.png`: An image visualization of the space use.
+For each `Trajectory` in the input `TrajectoryCollection` two outputs are produced:
 
-`out.gif`: An animated visualization of the space use.
+`{n}.png`: An image visualization of the space use.
+
+`{n}.gif`: An animated visualization of the space use.
 
 ### Settings
 `Resampling Frequency` (`freq`): The time frequency of track resampling before binning. Accepts any `unit` value at least one second from https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html

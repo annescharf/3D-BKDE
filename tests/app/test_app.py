@@ -20,5 +20,3 @@ class MyTestCase(unittest.TestCase):
 
         # execute
         self.sut.execute(data=data, config=config)
-        assert os.path.exists(self.sut.moveapps_io.create_artifacts_file("out.png"))
-        assert os.path.exists(self.sut.moveapps_io.create_artifacts_file("out.gif"))

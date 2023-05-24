@@ -1,5 +1,7 @@
 import gc
 import multiprocessing
+import os
+import pickle
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -51,15 +53,30 @@ class App(object):
         )
 
     @hook_impl
-    def execute(self, data: TrajectoryCollection, config: dict) -> list:
+    def execute(self, data: TrajectoryCollection, config: dict) -> TrajectoryCollection:
         jax.config.update("jax_platform_name", "cpu")
         jax.config.update("jax_platforms", "cpu")
 
         app_config = self.map_config(config=config)
 
+        with tempfile.TemporaryFile() as input_holder:
+            pickle.dump(data, input_holder)
+
+            for traj_i in range(len(data.trajectories)):
+                self.execute_once(data, app_config, traj_i)
+                input_holder.seek(0)
+                data = pickle.load(input_holder)
+
+        return data
+
+    def execute_once(self, data: TrajectoryCollection, app_config: AppConfig, traj_i: int):
+        traj = data.trajectories[traj_i]
+
+        screenshot_path = self.moveapps_io.create_artifacts_file(f"{traj_i}.png")
+        gif_path = self.moveapps_io.create_artifacts_file(f"{traj_i}.gif")
+
         freq = pd.Timedelta(app_config.freq).to_timedelta64().astype("timedelta64[s]").astype("uint32")
 
-        traj = data.trajectories[0]
         del data.trajectories, data
 
         traj = traj.to_crs(pyproj.CRS(4326))
@@ -223,10 +240,11 @@ class App(object):
             show_zlabels=False,
         )
 
-        pl.screenshot(self.moveapps_io.create_artifacts_file("out.png"), return_img=10)
+        pl.screenshot(screenshot_path, return_img=10)
 
-        pl.open_gif(self.moveapps_io.create_artifacts_file("out.gif"), fps=10)
+        pl.open_gif(gif_path, fps=10)
         pl.orbit_on_path(path, focus=focus, write_frames=True)
         pl.close()
 
-        return []
+        assert os.path.exists(screenshot_path)
+        assert os.path.exists(gif_path)
